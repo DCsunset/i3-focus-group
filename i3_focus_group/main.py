@@ -1,6 +1,6 @@
 """
 i3-focus-group
-Copyright (C) <year>  <name of author>
+Copyright (C) 2024  DCsusnet
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as published
@@ -21,6 +21,7 @@ import asyncio
 import argparse
 import sys
 import socket
+import logging
 from functools import partial
 from collections import deque
 from i3ipc.aio import Connection
@@ -38,24 +39,27 @@ parser.add_argument(
   default=f"{defaultSocketDir}/i3-focus-group.sock",
   help="Socket path to listen at"
 )
+parser.add_argument("--log", choices=["debug", "info", "warning", "error", "critical"], default="warning", help="Log level")
 args = parser.parse_args()
 
 group = deque(maxlen=args.size)
 lock = asyncio.Lock()
-
+logging.getLogger().setLevel(args.log.upper())
 
 async def handle_client_connection(i3, reader: asyncio.StreamReader, writer: asyncio.StreamWriter):
   # prevent mlutiple clients from modifying states concurrently
   async with lock:
-    [root, req] = await asyncio.gather(
+    [root, reqRaw] = await asyncio.gather(
       i3.get_tree(),
       reader.read()
     )
 
+    req = reqRaw.decode("utf-8").strip()
     cur_container = root.find_focused()
     con_id = cur_container.id
 
-    match req.decode("utf-8"):
+    logging.info(f"Req: {req}")
+    match req:
       case "add":
         # add current container to group
         if not con_id in group:
@@ -121,11 +125,17 @@ async def handle_client_connection(i3, reader: asyncio.StreamReader, writer: asy
 
         await i3.command(f"[con_id={group[next_idx]}] focus")
 
+      case _:
+        logging.warn(f"Invalid req: {req}")
+
+    logging.debug(f"Group: {group}")
+
 
 async def main():
   i3 = await Connection(auto_reconnect=True).connect()
-
   server = await asyncio.start_unix_server(partial(handle_client_connection, i3), args.socket)
+  logging.info("i3-focus-group started")
+
   async with server:
     await asyncio.gather(
       server.serve_forever(),
