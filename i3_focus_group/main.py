@@ -58,7 +58,7 @@ async def handle_client_connection(i3, reader: asyncio.StreamReader, writer: asy
     cur_container = root.find_focused()
     con_id = cur_container.id
 
-    logging.info(f"Req: {req}")
+    logging.info(f"Handling request: {req}")
     match req:
       case "add":
         # add current container to group
@@ -142,5 +142,9 @@ async def main():
       i3.main()
     )
 
-asyncio.run(main())
-
+try:
+  asyncio.run(main())
+except KeyboardInterrupt:
+  sys.exit(0)
+except Exception as e:
+  logging.critical(e)
