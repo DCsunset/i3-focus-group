@@ -1,5 +1,8 @@
 # i3-focus-group
 
+[![PyPI](https://img.shields.io/pypi/v/i3-focus-group)](https://pypi.org/project/i3-focus-group/)
+[![GitHub](https://img.shields.io/github/license/DCsunset/i3-focus-group?color=blue)](https://github.com/DCsunset/i3-focus-group)
+
 Create a group for i3/sway containers to easily switch focus between.
 
 ## Installation
