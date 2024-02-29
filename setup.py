@@ -29,8 +29,7 @@ with open(repo_dir.joinpath("i3_focus_group", "_version.py")) as f:
   exec(f.read(), main_ns)
 
 # Long description
-readme = path.join(repo_base_dir, 'README.md')
-with open(readme) as f:
+with open(repo_dir.joinpath('README.md')) as f:
   long_description = f.read()
 
 setup(
