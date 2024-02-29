@@ -13,6 +13,7 @@ Using pip:
 pip install i3-focus-group
 ```
 
+If you are using Nix, you can install it from NUR.
 
 ## Usage
 
