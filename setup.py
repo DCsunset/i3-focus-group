@@ -17,15 +17,15 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
 from setuptools import setup
-from os import path
+from pathlib import Path
 
 version = '0.1.0'
 
-repo_base_dir = path.abspath(path.dirname(__file__))
+repo_dir = Path(__file__).parent.absolute()
 
 # get version
 main_ns = {}
-with open(repo_dir.joinpath("concurrent_executor", "_version.py")) as f:
+with open(repo_dir.joinpath("i3_focus_group", "_version.py")) as f:
   exec(f.read(), main_ns)
 
 # Long description
