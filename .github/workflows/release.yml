@@ -34,6 +34,13 @@ jobs:
           python setup.py sdist bdist_wheel
           twine check dist/*
           twine upload --skip-existing dist/*
+          tar -cavf dist.tar.gz dist
 
       - name: Release
-        uses: softprops/action-gh-release@v1
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file_glob: true
+          file: dist.tar.gz
+          tag: ${{ inputs.release_tag }}
+          overwrite: true
