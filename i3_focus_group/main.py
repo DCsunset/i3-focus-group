@@ -16,6 +16,7 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
+from ._version import __version__
 import os
 import asyncio
 import argparse
@@ -40,6 +41,7 @@ parser.add_argument(
   help="Socket path to listen at"
 )
 parser.add_argument("--log", choices=["debug", "info", "warning", "error", "critical"], default="warning", help="Log level")
+parser.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
 args = parser.parse_args()
 
 group = deque(maxlen=args.size)

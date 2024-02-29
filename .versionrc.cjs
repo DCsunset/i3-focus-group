@@ -1,14 +1,21 @@
-const re = /version = '(\d\.\d\.\d)'/;
+const re = /^__version__ = "(\d\.\d\.\d)"/;
 
-const updater = {
-  readVersion: (contents) => contents.match(re)[1],
-  writeVersion: (contents, version) => contents.replace(re, `version = '${version}'`)
-};
+function readVersion(contents) {
+	const matches = contents.match(re);
+	return matches[1];
+}
+
+function writeVersion(contents, version) {
+	return contents.replace(re, `__version__ = "${version}"`);
+}
 
 const tracker = {
-  filename: "./setup.py",
-  updater
-}
+	filename: "i3_focus_group/_version.py",
+	updater: {
+		readVersion,
+		writeVersion
+	}
+};
 
 module.exports = {
   types: [
