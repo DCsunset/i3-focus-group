@@ -27,7 +27,8 @@ module.exports = {
     {"type": "refactor", "section": "Misc"},
     {"type": "perf", "section": "Misc"},
     {"type": "test", "section": "Misc"},
-    {"type": "ci", "section": "Misc"}
+    {"type": "ci", "section": "Misc"},
+    {"type": "build", "section": "Misc"}
   ],
   // read version
   packageFiles: [tracker],
