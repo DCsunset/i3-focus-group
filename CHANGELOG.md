@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.1.1](https://github.com/DCsunset/i3-focus-group/compare/v0.1.0...v0.1.1) (2024-02-29)
+
+
+### Misc
+
+* fix github workflow location ([5d92101](https://github.com/DCsunset/i3-focus-group/commit/5d92101ecfb9dbffbd8cbe6733d1600db08140e9))
+
 ## 0.1.0 (2024-02-29)
 
 
