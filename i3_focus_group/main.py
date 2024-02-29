@@ -84,16 +84,19 @@ async def handle_client_connection(i3, reader: asyncio.StreamReader, writer: asy
           return
 
         # promote this container to head if not at head
-        idx = group.index(con_id)
-        if idx is not None:
+        try:
+          # will raise exception if not found
+          idx = group.index(con_id)
           # promote this container to head
           group.remove(con_id)
           group.appendleft(con_id)
           idx = 0
 
-          # switch focus to next container and swap
+          # switch focus
           next_idx = (idx+1) % len(group)
           group[idx], group[next_idx] = group[next_idx], group[idx]
+        except:
+          pass
 
         await i3.command(f"[con_id={group[0]}] focus")
 
@@ -103,11 +106,11 @@ async def handle_client_connection(i3, reader: asyncio.StreamReader, writer: asy
           return
 
         # promote this container to head if not at head
-        idx = group.index(con_id)
-        if idx is not None:
+        try:
+          idx = group.index(con_id)
           # switch focus to next container
           next_idx = (idx+1) % len(group)
-        else:
+        except:
           next_idx = 0
 
         await i3.command(f"[con_id={group[next_idx]}] focus")
@@ -118,11 +121,11 @@ async def handle_client_connection(i3, reader: asyncio.StreamReader, writer: asy
           return
 
         # promote this container to head if not at head
-        idx = group.index(con_id)
-        if idx is not None:
+        try:
+          idx = group.index(con_id)
           # switch focus to next container
           next_idx = (idx-1) % len(group)
-        else:
+        except:
           next_idx = 0
 
         await i3.command(f"[con_id={group[next_idx]}] focus")
