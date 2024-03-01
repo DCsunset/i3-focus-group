@@ -54,7 +54,7 @@ For more command-line options, run `i3-focus-group -h`.
 1. To start with, the group with be empty.
 2. Then suppose two containers A, B, and C are added to the group and now C is focused.
    The group becomes `[C] B A`. (bracket means current focus)
-3. Suppose `switch` command is issued, it will focus on the next container A and promote it to the head.
+3. Suppose `switch` command is issued, it will focus on the next container B and promote it to the head.
    The group becomes `[B] C A`.
 4. Suppose `switch` command is issued again, the group will become `[C] B A`.
 5. Suppose `peekNext` is issued. The focus will change to B but without promoting the container.

@@ -31,7 +31,7 @@ from i3ipc import Event
 defaultSocketDir = os.environ.get("XDG_RUNTIME_DIR", f"/run/user/{os.getuid()}")
 
 parser = argparse.ArgumentParser(
-  description="i3 script to switch between windows in history",
+  description="Create a group for i3/sway containers to easily switch focus between",
   formatter_class=argparse.ArgumentDefaultsHelpFormatter
 )
 parser.add_argument("--size", type=int, default=100, help="Max size of group")
