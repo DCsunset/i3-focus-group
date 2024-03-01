@@ -5,6 +5,16 @@ on:
     tags:
       - '*'
   workflow_dispatch:
+    inputs:
+      release:
+        type: boolean
+        default: true
+        required: true
+        description: "Create a GitHub release"
+      release_tag:
+        type: string
+        required: true
+        description: "Tag for GitHub release"
 
 jobs:
   build-and-release:
@@ -16,7 +26,7 @@ jobs:
 
     steps:
       - name: Checkout codebase
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Setup Python
         uses: actions/setup-python@v2
@@ -36,8 +46,18 @@ jobs:
           twine upload --skip-existing dist/*
           tar -cavf dist.tar.gz dist
 
-      - name: Release
+      - name: GitHub release (from tag)
         uses: svenstaro/upload-release-action@v2
+        if: ${{ github.event_name == 'push' }}
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file_glob: true
+          file: dist.tar.gz
+          overwrite: true
+
+      - name: GitHub release (manual)
+        uses: svenstaro/upload-release-action@v2
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.release }}
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file_glob: true
