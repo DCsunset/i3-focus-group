@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.1.3](https://github.com/DCsunset/i3-focus-group/compare/v0.1.2...v0.1.3) (2024-03-01)
+
+
+### Features
+
+* add clear command ([9ed7554](https://github.com/DCsunset/i3-focus-group/commit/9ed755487e36f776f7f612f23b5477d7d08bcc87))
+
+
+### Misc
+
+* allow manual release in action ([58bd296](https://github.com/DCsunset/i3-focus-group/commit/58bd2967334f9bc48e017133bfcbf1e2993357ec))
+* fix action permission ([3afe42e](https://github.com/DCsunset/i3-focus-group/commit/3afe42eb13bde471faa6e60b1834a9ed90bc8c1b))
+* fix example and command description ([a21e47c](https://github.com/DCsunset/i3-focus-group/commit/a21e47ce543f4ac5fea85900dae6334e93130628))
+
 ## [0.1.2](https://github.com/DCsunset/i3-focus-group/compare/v0.1.1...v0.1.2) (2024-02-29)
 
 
