@@ -27,6 +27,7 @@ The following commands are supported:
 | add      | Add the current container to the group                               |
 | remove   | Remove the current container from the group                          |
 | toggle   | Toggle the current container (add or remove)                         |
+| clear    | Clear the group (remove all containers)                              |
 | switch   | Focus next container in group and promote this container if in group |
 | peekNext | Focus next container in group but without changing order             |
 | peekPrev | Focus previous container in group but without changing order         |
@@ -41,7 +42,8 @@ echo "switch" | socat - $XDG_RUNTIME_DIR/i3-focus-group.sock
 To use it with i3/sway, simply add keybindings to run the above commands:
 ```
 bindsym Mod4+Tab exec echo "switch" | socat - $XDG_RUNTIME_DIR/i3-focus-group.sock
-bindsym Mod4+g exec echo "toggle" | socat - $XDG_RUNTIME_DIR/i3-focus-group.sock
+bindsym Mod4+grave exec echo "toggle" | socat - $XDG_RUNTIME_DIR/i3-focus-group.sock
+bindsym Mod4+Shift+grave exec echo "clear" | socat - $XDG_RUNTIME_DIR/i3-focus-group.sock
 bindsym Mod4+comma exec echo "peekPrev" | socat - $XDG_RUNTIME_DIR/i3-focus-group.sock
 bindsym Mod4+period exec echo "peekNext" | socat - $XDG_RUNTIME_DIR/i3-focus-group.sock
 ```

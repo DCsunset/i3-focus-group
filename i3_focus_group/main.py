@@ -78,8 +78,12 @@ async def handle_client_connection(i3, reader: asyncio.StreamReader, writer: asy
         else:
           group.appendleft(con_id)
 
+      case "clear":
+        # clear the current group
+        group.clear()
+
       case "switch":
-        # focus next window in group and promote this window if in group
+        # focus next container in group and promote this window if in group
         if len(group) == 0:
           return
 
