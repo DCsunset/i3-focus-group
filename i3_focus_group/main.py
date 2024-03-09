@@ -60,6 +60,14 @@ async def handle_client_connection(i3, reader: asyncio.StreamReader, writer: asy
     cur_container = root.find_focused()
     con_id = cur_container.id
 
+    # clean up non-existing container
+    global group
+    group = deque(
+      filter(lambda x: root.find_by_id(x) is not None, group),
+      maxlen=args.size
+    )
+    logging.debug(f"After cleanup: {group}")
+
     logging.info(f"Handling request: {req}")
     match req:
       case "add":
@@ -87,11 +95,10 @@ async def handle_client_connection(i3, reader: asyncio.StreamReader, writer: asy
         if len(group) == 0:
           return
 
-        # promote this container to head if not at head
         try:
           # will raise exception if not found
           idx = group.index(con_id)
-          # promote this container to head
+          # promote this container to head if not at head
           group.remove(con_id)
           group.appendleft(con_id)
           idx = 0
@@ -109,7 +116,6 @@ async def handle_client_connection(i3, reader: asyncio.StreamReader, writer: asy
         if len(group) == 0:
           return
 
-        # promote this container to head if not at head
         try:
           idx = group.index(con_id)
           # switch focus to next container
@@ -124,7 +130,6 @@ async def handle_client_connection(i3, reader: asyncio.StreamReader, writer: asy
         if len(group) == 0:
           return
 
-        # promote this container to head if not at head
         try:
           idx = group.index(con_id)
           # switch focus to next container
