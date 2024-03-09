@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.1.4](https://github.com/DCsunset/i3-focus-group/compare/v0.1.3...v0.1.4) (2024-03-09)
+
+
+### Bug Fixes
+
+* clean up non-existent containers to prevent errors ([4ebde78](https://github.com/DCsunset/i3-focus-group/commit/4ebde78c859aa7ca505d5207c726dcfdf28fbd3d))
+
 ## [0.1.3](https://github.com/DCsunset/i3-focus-group/compare/v0.1.2...v0.1.3) (2024-03-01)
 
 
