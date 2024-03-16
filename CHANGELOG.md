@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.1.5](https://github.com/DCsunset/i3-focus-group/compare/v0.1.4...v0.1.5) (2024-03-16)
+
+
+### Features
+
+* support adding to group on new window ([2f4c9ff](https://github.com/DCsunset/i3-focus-group/commit/2f4c9ffa04ff366851bb1838ea848589ce88bb66))
+
 ## [0.1.4](https://github.com/DCsunset/i3-focus-group/compare/v0.1.3...v0.1.4) (2024-03-09)
 
 
