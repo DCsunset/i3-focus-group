@@ -40,6 +40,12 @@ parser.add_argument(
   default=f"{defaultSocketDir}/i3-focus-group.sock",
   help="Socket path to listen at"
 )
+parser.add_argument(
+  "--add-on-new",
+  default=False,
+  action=argparse.BooleanOptionalAction,
+  help="auto add container to group on new window"
+)
 parser.add_argument("--log", choices=["debug", "info", "warning", "error", "critical"], default="warning", help="Log level")
 parser.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
 args = parser.parse_args()
@@ -48,17 +54,14 @@ group = deque(maxlen=args.size)
 lock = asyncio.Lock()
 logging.getLogger().setLevel(args.log.upper())
 
-async def handle_client_connection(i3, reader: asyncio.StreamReader, writer: asyncio.StreamWriter):
-  # prevent mlutiple clients from modifying states concurrently
-  async with lock:
-    [root, reqRaw] = await asyncio.gather(
-      i3.get_tree(),
-      reader.read()
-    )
 
-    req = reqRaw.decode("utf-8").strip()
-    cur_container = root.find_focused()
-    con_id = cur_container.id
+async def process_request(i3, req: str, container=None):
+  # use lock to prevent multiple clients from modifying states concurrently
+  async with lock:
+    root = await i3.get_tree()
+    if not container:
+      container = root.find_focused()
+    con_id = container.id
 
     # clean up non-existing container
     global group
@@ -68,12 +71,12 @@ async def handle_client_connection(i3, reader: asyncio.StreamReader, writer: asy
     )
     logging.debug(f"After cleanup: {group}")
 
-    logging.info(f"Handling request: {req}")
     match req:
       case "add":
-        # add current container to group
-        if not con_id in group:
-          group.appendleft(con_id)
+        # add current container to the head of group
+        if con_id in group:
+          group.remove(con_id)
+        group.appendleft(con_id)
 
       case "remove":
         # remove current container from group
@@ -97,9 +100,8 @@ async def handle_client_connection(i3, reader: asyncio.StreamReader, writer: asy
 
         try:
           # will raise exception if not found
-          idx = group.index(con_id)
-          # promote this container to head if not at head
           group.remove(con_id)
+          # promote this container to head if not at head
           group.appendleft(con_id)
           idx = 0
 
@@ -142,11 +144,25 @@ async def handle_client_connection(i3, reader: asyncio.StreamReader, writer: asy
       case _:
         logging.warn(f"Invalid req: {req}")
 
-    logging.debug(f"Group: {group}")
+
+async def handle_client_connection(i3, reader: asyncio.StreamReader, writer: asyncio.StreamWriter):
+  reqRaw = await reader.read()
+  req = reqRaw.decode("utf-8").strip()
+
+  logging.info(f"Handling request: {req}")
+  await process_request(i3, req)
+  logging.debug(f"Group: {group}")
+
+
+async def on_window_new(i3, e):
+  # add to group on window_focus
+  if args.add_on_new:
+    await process_request(i3, "add", e.container)
 
 
 async def main():
   i3 = await Connection(auto_reconnect=True).connect()
+  i3.on(Event.WINDOW_NEW, on_window_new)
   server = await asyncio.start_unix_server(partial(handle_client_connection, i3), args.socket)
   logging.info("i3-focus-group started")
 
